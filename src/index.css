@@ -1,0 +1,54 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-white dark:bg-dark text-dark-100 dark:text-white min-h-screen scrollbar-thin scrollbar-track-black/5 dark:scrollbar-track-white/5 scrollbar-thumb-black/20 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-black/30 dark:hover:scrollbar-thumb-white/30;
+  }
+}
+
+@layer components {
+  .sidebar-button {
+    @apply flex items-center gap-4 px-4 py-2.5 w-full rounded-xl
+    text-dark-100/90 dark:text-white/90
+    hover:bg-black/5 dark:hover:bg-white/5
+    transition-all duration-300;
+  }
+  
+  .sidebar-button.active {
+    @apply bg-primary/20 hover:bg-primary/30
+    text-dark-100 dark:text-white;
+  }
+
+  .video-card {
+    @apply bg-white dark:bg-dark-100 rounded-xl overflow-hidden transition-all duration-300 hover:-translate-y-2 shadow-lg hover:shadow-xl;
+  }
+
+  .video-title {
+    @apply font-semibold text-dark-100/90 dark:text-white/90 line-clamp-2 hover:text-dark-100 dark:hover:text-white transition-colors duration-300;
+  }
+
+  .channel-name {
+    @apply text-sm text-dark-100/70 dark:text-white/70 hover:text-primary transition-colors duration-300;
+  }
+
+  .video-stats {
+    @apply text-xs text-dark-100/60 dark:text-white/60;
+  }
+
+  .custom-scrollbar {
+    @apply scrollbar-thin scrollbar-track-transparent scrollbar-thumb-black/20 dark:scrollbar-thumb-white/20 hover:scrollbar-thumb-black/30 dark:hover:scrollbar-thumb-white/30;
+  }
+}
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.no-scrollbar {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
