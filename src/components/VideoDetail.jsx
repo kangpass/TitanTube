@@ -16,6 +16,24 @@ const VideoDetail = () => {
   const [isDownloading, setIsDownloading] = useState(false);
   const [downloadUrls, setDownloadUrls] = useState(null);
   const [showQualityOptions, setShowQualityOptions] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 1024);
+  const [playedSeconds, setPlayedSeconds] = useState(0);
+  const [playing, setPlaying] = useState(true);
+
+  // Reset playback time when video ID changes
+  useEffect(() => {
+    setPlayedSeconds(0);
+    setPlaying(true);
+  }, [id]);
+
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 1024);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
 
   useEffect(() => {
     fetchFromAPI(`video/info?id=${id}`).then((data) => {
@@ -69,6 +87,22 @@ const VideoDetail = () => {
 
   const { title, channelId, channelTitle, description, viewCount, likeCount } = videoDetail;
 
+  const renderVideoPlayer = () => (
+    <ReactPlayer
+      key={id}
+      url={`https://www.youtube.com/watch?v=${id}`}
+      className="react-player"
+      controls
+      width="100%"
+      height="100%"
+      playing={playing}
+      onProgress={({ playedSeconds }) => setPlayedSeconds(playedSeconds)}
+      onPlay={() => setPlaying(true)}
+      onPause={() => setPlaying(false)}
+      progressInterval={500}
+    />
+  );
+
   return (
     <div className="flex flex-col min-h-[95vh] bg-white dark:bg-dark transition-colors">
       {/* Fixed Header Space */}
@@ -79,14 +113,7 @@ const VideoDetail = () => {
         {/* Video Player - Fixed on mobile */}
         <div className="fixed top-[50px] left-0 right-0 z-20 bg-white dark:bg-dark transition-colors">
           <div className="w-full aspect-video bg-black">
-            <ReactPlayer
-              url={`https://www.youtube.com/watch?v=${id}`}
-              className="react-player"
-              controls
-              width="100%"
-              height="100%"
-              playing={true}
-            />
+            {isMobile && renderVideoPlayer()}
           </div>
         </div>
 
@@ -129,14 +156,7 @@ const VideoDetail = () => {
           <div className="flex-1 max-w-[calc(100%-400px)]">
             {/* Video Player */}
             <div className="w-full aspect-video bg-black rounded-xl overflow-hidden">
-              <ReactPlayer
-                url={`https://www.youtube.com/watch?v=${id}`}
-                className="react-player"
-                controls
-                width="100%"
-                height="100%"
-                playing={true}
-              />
+              {!isMobile && renderVideoPlayer()}
             </div>
 
             {/* Video Info */}
